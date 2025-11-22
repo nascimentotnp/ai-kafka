@@ -1,4 +1,4 @@
-name: CI - Python (3.9 e 3.12)
+name: CI - Estudos Python
 
 on:
   push:
@@ -14,15 +14,11 @@ jobs:
       matrix:
         python-version: ["3.9", "3.12"]
 
-    env:
-      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-      GROQ_MODEL: "llama-3.3-70b-versatile"
-
     steps:
-      - name: Checkout do código
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configurar Python ${{ matrix.python-version }}
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
@@ -32,6 +28,6 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Rodar testes com pytest
+      - name: Rodar testes
         run: |
           pytest
