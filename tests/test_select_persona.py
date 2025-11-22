@@ -16,7 +16,6 @@ class FakeLLMClient:
                 self._outer = outer
 
             def create(self, **kwargs):
-                # Monta um objeto com a mesma "cara" da resposta da Groq
                 message = SimpleNamespace(content=self._outer._answer)
                 choice = SimpleNamespace(message=message)
                 return SimpleNamespace(choices=[choice])

@@ -1,7 +1,7 @@
 # select_persona.py
 from typing import Dict
 
-from config.config import llm_client, MODEL
+from src.config.config import llm_client, MODEL
 
 personas: Dict[str, str] = {
     "positivo": """
