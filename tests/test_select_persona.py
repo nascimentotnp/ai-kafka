@@ -1,4 +1,8 @@
+import os
 from types import SimpleNamespace
+
+os.environ.setdefault("GROQ_API_KEY", "fake-key-for-tests")
+os.environ.setdefault("GROQ_MODEL", "llama-3.3-70b-versatile")
 
 import src.select_persona as sp
 
