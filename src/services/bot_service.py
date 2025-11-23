@@ -1,3 +1,4 @@
+import logging
 from time import sleep
 from typing import List, Dict
 
@@ -50,12 +51,20 @@ Siga estritamente as regras abaixo:
 
 
 def call_llm(messages: List[Dict[str, str]]) -> str:
-    reply = llm_client.chat.completions.create(
-        model=MODEL,
-        messages=messages,
-        temperature=float(TEMPERATURE),
-        max_tokens=int(MAX_TOKENS)
-    )
+    try:
+        reply = llm_client.chat.completions.create(
+            model=MODEL,
+            messages=messages,
+            temperature=TEMPERATURE,
+            max_tokens=MAX_TOKENS,
+        )
+    except Exception as e:
+        logging.error(f"[call_llm] erro com max_tokens={MAX_TOKENS}: {e}")
+        reply = llm_client.chat.completions.create(
+            model=MODEL,
+            messages=messages,
+            temperature=TEMPERATURE,
+        )
 
     return reply.choices[0].message.content
 
@@ -80,7 +89,7 @@ def bot(prompt_user: str) -> str:
 
         except Exception as e:
             retry += 1
-            print(f"[bot] erro: {e}")
+            logging.error(f"[bot] erro: {e}")
             sleep(1)
 
     return "Erro ao processar sua solicitação."
