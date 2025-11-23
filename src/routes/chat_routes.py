@@ -1,18 +1,16 @@
-from flask import Blueprint, request, jsonify
-from typing import Any
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
 
+from src.schemas.schema import ChatResponse, ChatRequest
 from src.services.bot_service import bot
 
-chat_bp = Blueprint("chat", __name__)
+chat_router = APIRouter()
 
 
-@chat_bp.route("/chat", methods=["POST"])
-def chat() -> Any:
-    body = request.get_json(silent=True) or {}
-    prompt = body.get("msg", "")
+@chat_router.post("/chat", response_model=ChatResponse)
+def chat(req: ChatRequest):
+    if not req.msg.strip():
+        raise HTTPException(status_code=400, detail="Campo 'msg' é obrigatório.")
 
-    if not prompt:
-        return jsonify({"erro": "Campo 'msg' é obrigatório."}), 400
-
-    reply = bot(prompt)
-    return reply
+    answer = bot(req.msg)
+    return ChatResponse(resposta=answer)

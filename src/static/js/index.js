@@ -1,9 +1,13 @@
+// static/js/chat.js
+
+const API_URL = "http://127.0.0.1:8000"; // será sobrescrita pelo Streamlit
+
 let chat = document.querySelector('#chat');
 let input = document.querySelector('#input');
 let botaoEnviar = document.querySelector('#botao-enviar');
 
 async function enviarMensagem() {
-    if(input.value == "" || input.value == null) return;
+    if (input.value == "" || input.value == null) return;
     let mensagem = input.value;
     input.value = "";
 
@@ -15,16 +19,17 @@ async function enviarMensagem() {
     chat.appendChild(novaBolhaBot);
     vaiParaFinalDoChat();
     novaBolhaBot.innerHTML = "Analisando ..."
-    
-    // Envia requisição com a mensagem para a API do ChatBot
-    const resposta = await fetch("http://127.0.0.1:5000/chat", {
+
+    const resposta = await fetch(API_URL + "/chat", {
         method: "POST",
         headers: {
-        "Content-Type": "application/json",
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify({'msg':mensagem}),
+        body: JSON.stringify({'msg': mensagem}),
     });
-    const textoDaResposta = await resposta.text();
+
+    const data = await resposta.json();
+    const textoDaResposta = data.resposta;
     console.log(textoDaResposta);
     novaBolhaBot.innerHTML = textoDaResposta.replace(/\n/g, '<br>');
     vaiParaFinalDoChat();

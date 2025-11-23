@@ -1,10 +1,9 @@
 import os
 
-# Garante env fake p/ não explodir o config na importação
 os.environ.setdefault("GROQ_API_KEY", "fake-key-for-tests")
 os.environ.setdefault("GROQ_MODEL", "llama-3.3-70b-versatile")
 
-import src.services.bot_service as bs  # importar depois de setar envs
+import src.services.bot_service as bs
 
 
 def test_setup_prompt_inclui_persona_e_contexto(monkeypatch):

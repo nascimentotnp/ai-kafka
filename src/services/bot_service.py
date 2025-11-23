@@ -1,7 +1,7 @@
 from time import sleep
 from typing import List, Dict
 
-from src.config.config import llm_client, MODEL
+from src.config.config import llm_client, MODEL, MAX_TOKENS, TEMPERATURE
 from src.helpers import load
 from src.select_persona import select_persona, personas
 
@@ -53,8 +53,8 @@ def call_llm(messages: List[Dict[str, str]]) -> str:
     reply = llm_client.chat.completions.create(
         model=MODEL,
         messages=messages,
-        temperature=0,
-        max_tokens=500
+        temperature=float(TEMPERATURE),
+        max_tokens=int(MAX_TOKENS)
     )
 
     return reply.choices[0].message.content
