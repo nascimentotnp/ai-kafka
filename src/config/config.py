@@ -7,8 +7,8 @@ load_dotenv()
 
 API_KEY = os.getenv("GROQ_API_KEY")
 MODEL = os.getenv("GROQ_MODEL", "llama-3.1-70b-versatile")
-TEMPERATURE = float(os.getenv("TEMPERATURE"))
-MAX_TOKENS = int(os.getenv("MAX_TOKENS"))
+TEMPERATURE = float(os.getenv("TEMPERATURE", "0.0"))
+MAX_TOKENS = int(os.getenv("MAX_TOKENS", "500"))
 
 if not API_KEY:
     raise RuntimeError(
